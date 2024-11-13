@@ -1,36 +1,63 @@
 public class Busket {
-    private static String items = "";
+    private String items = "";
 
-    public static void main(String[] args) {
+    private int totalPrice = 0;
 
-        add("1 кг индейки", 700);
-        add("2 кг конфет", 600);
-        add("Связка бананов", 200);
-        add("1л молока", 100);
-        add("500г орехов", 500);
-        print("Содержание корзины: ");
-        clear();
-        print("Содержание корзины: ");
+    private int limit = 1_000_000;
+
+    public Busket() {
+        this.items = "Список товаров:";
+        System.out.println("Товары: " + items);
     }
 
-    public static void add(String name, int price) {
-        if(items.isEmpty()) {
+    public Busket(int limit) {
+        this();
+        this.limit = limit;
+    }
+
+    public Busket(String items, int totalPrice) {
+        this();
+        add(items, totalPrice);
+    }
+
+    public void add(String name, int price) {
+        if (totalPrice + price > limit) {
+            return;
+        } else if (containItem(name)) {
+            return;
+        } else if(items.isEmpty()) {
             items += name + " - " + price + " руб.";
+            totalPrice += price;
         } else {
             items += "\n" + name + " - " + price + " руб.";
+            totalPrice += price;
         }
     }
 
-    public static void clear() {
+    public void clear() {
         items = "";
+        totalPrice = 0;
     }
 
-    public static void print(String title) {
+    public void print(String title) {
         System.out.println(title);
         if (items.isEmpty()) {
             System.out.println("Корзина пуста!");
         } else {
             System.out.println(items);
+            System.out.println("Стоимость данной корзине равна: " + getTotalPrice());
         }
     }
+
+    public boolean containItem(String name) {
+        if(items.contains(name)) {
+            return true;
+        }
+        return false;
+        // return items.contains(name);
+    }
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
 }
